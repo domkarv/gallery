@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     connectionString: env.DATABASE_URL,
   },
-  tablesFilter: ["t3-gallery_*"],
+  tablesFilter: ["friends-gallery_*"],
 } satisfies Config;
