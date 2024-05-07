@@ -15,9 +15,9 @@ async function Images() {
             key={img.id}
             src={img.url}
             alt={img.name}
-            height={200}
-            width={200}
-            className="object-contain object-center"
+            height={256}
+            width={256}
+            className="h-64 w-64 object-contain"
           />
         );
       })}
