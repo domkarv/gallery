@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import Image from "next/image";
+import ImageDialog from "~/components/image-dialog";
 import { getImages } from "~/server/actions";
 
 export const dynamic = "force-dynamic";
@@ -8,18 +8,9 @@ async function Images() {
   const images = await getImages();
 
   return (
-    <div className="grid grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
       {images.map((img) => {
-        return (
-          <Image
-            key={img.id}
-            src={img.url}
-            alt={img.name}
-            height={256}
-            width={256}
-            className="h-64 w-64 object-contain"
-          />
-        );
+        return <ImageDialog img={img} key={img.id} />;
       })}
     </div>
   );

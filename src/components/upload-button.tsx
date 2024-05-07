@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { UploadDropzone } from "~/utils/uploadthing";
 import {
   AlertDialog,
@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 export default function CustomUploadButton() {
   const router = useRouter();
   const ref = useRef<HTMLButtonElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <AlertDialog>
@@ -31,12 +32,24 @@ export default function CustomUploadButton() {
             router.refresh();
             if (ref.current) ref.current.click();
           }}
+          onUploadError={(error) => {
+            setError(error ? "Please try again later." : null);
+          }}
         />
-        <AlertDialogFooter>
-          <AlertDialogAction ref={ref} className="invisible">
-            Done
-          </AlertDialogAction>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogFooter className="flex flex-col items-center">
+          {error && <div className="text-destructive">{error}</div>}
+          <div className="flex w-full flex-row items-center justify-end">
+            <AlertDialogAction ref={ref} className="invisible">
+              Done
+            </AlertDialogAction>
+            <AlertDialogCancel
+              onClick={() => {
+                setError(null);
+              }}
+            >
+              Cancel
+            </AlertDialogCancel>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

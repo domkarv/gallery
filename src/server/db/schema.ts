@@ -31,3 +31,5 @@ export const images = createTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+
+export type ImageType = typeof images.$inferSelect;

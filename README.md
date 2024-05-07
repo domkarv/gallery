@@ -9,11 +9,14 @@
 - [x] Attach database to UI
 - [x] Add authentication (w/ clerk)
 - [x] Add image upload
-- [x] "taint" (server-only)
 - [x] Use Next/Image component
+- [x] download button
 - [ ] Error management (w/ Sentry)
-- [ ] Routing/image page (parallel route)
-- [ ] Update upload button to be less cringe
+- [ ] Error management on Client Side
+- [ ] add descrption and tags for images to search
+- [ ] Add search functionality
+- [ ] Add infinite scroll
+- [ ] should be able to upload .heic files
 - [ ] Analytics (posthog)
 - [ ] Delete button (w/ Server Actions)
 - [ ] Ratelimiting (upstash)

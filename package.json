@@ -1,5 +1,5 @@
 {
-  "name": "t3-gallery",
+  "name": "friends-gallery",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -29,7 +29,6 @@
     "postgres": "^3.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "server-only": "^0.0.1",
     "sharp": "^0.33.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
