@@ -3,7 +3,9 @@ import Image from "next/image";
 import { db } from "~/server/db";
 
 async function Images() {
-  const images = await db.query.images.findMany();
+  const images = await db.query.images.findMany({
+    orderBy: (model, { desc }) => desc(model.createdAt),
+  });
 
   return (
     <div className="grid grid-cols-3 gap-8">
