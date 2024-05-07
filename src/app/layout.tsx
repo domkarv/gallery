@@ -1,7 +1,9 @@
 import "~/styles/globals.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { TopNav } from "~/components/top-nav";
 import { cn } from "~/lib/utils";
 
 const font = Poppins({
@@ -22,16 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "min-h-screen scroll-smooth font-poppins antialiased",
-          font.variable,
-        )}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body
+          className={cn(
+            "min-h-screen scroll-smooth font-poppins antialiased",
+            font.variable,
+          )}
+        >
+          <TopNav />
+          <main className="container">{children}</main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
