@@ -5,8 +5,7 @@ export default async function HomePage() {
   const images = await db.query.images.findMany();
 
   return (
-    <main className="container flex min-h-screen flex-col items-center gap-4">
-      <h2 className="my-8 text-xl font-semibold">{`Friend's Gallery App`}</h2>
+    <div className="my-8 flex flex-col items-center">
       <div className="grid grid-cols-3 gap-8">
         {images.map((img) => {
           return (
@@ -21,6 +20,6 @@ export default async function HomePage() {
           );
         })}
       </div>
-    </main>
+    </div>
   );
 }
