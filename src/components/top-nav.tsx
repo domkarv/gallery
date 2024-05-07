@@ -1,4 +1,5 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Button } from "./ui/button";
 
 export function TopNav() {
   return (
@@ -7,7 +8,9 @@ export function TopNav() {
 
       <div className="flex flex-row items-center gap-4">
         <SignedOut>
-          <SignInButton />
+          <Button asChild variant="outline" size="sm">
+            <SignInButton>Sign In</SignInButton>
+          </Button>
         </SignedOut>
         <SignedIn>
           <UserButton />
