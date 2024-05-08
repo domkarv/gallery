@@ -10,6 +10,7 @@ import { extractRouterConfig } from "uploadthing/server";
 import { TopNav } from "~/components/top-nav";
 import { cn } from "~/lib/utils";
 import { ourFileRouter } from "./api/uploadthing/core";
+import { Toaster } from "~/components/ui/sonner";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
         >
           <TopNav />
           <main className="container">{children}</main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

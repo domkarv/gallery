@@ -19,7 +19,7 @@ export default function ImageDialog({ img }: { img: ImageType }) {
           alt={img.name}
           height={256}
           width={256}
-          className="h-64 w-64 object-contain"
+          className="object-contain"
         />
       </AlertDialogTrigger>
       <AlertDialogContent>

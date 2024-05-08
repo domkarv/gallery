@@ -1,57 +1,65 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import { UploadDropzone } from "~/utils/uploadthing";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
+import { toast } from "sonner";
+import { useUploadThing } from "~/utils/uploadthing";
+import { UploadIcon } from "lucide-react";
 
-export default function CustomUploadButton() {
+type Input = Parameters<typeof useUploadThing>;
+
+const useUploadThingInputProps = (...args: Input) => {
+  const $ut = useUploadThing(...args);
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const selectedFiles = Array.from(e.target.files);
+    const result = await $ut.startUpload(selectedFiles);
+
+    console.log("uploaded files", result);
+    // TODO: persist result in state maybe?
+  };
+
+  return {
+    inputProps: {
+      onChange,
+      multiple: ($ut.permittedFileInfo?.config?.image?.maxFileCount ?? 1) > 1,
+      accept: "image/*",
+    },
+    isUploading: $ut.isUploading,
+  };
+};
+
+export function SimpleUploadButton() {
   const router = useRouter();
-  const ref = useRef<HTMLButtonElement>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const { inputProps } = useUploadThingInputProps("imageUploader", {
+    onUploadBegin(fileName) {
+      toast.loading(`Uploading ${fileName}`, {
+        id: `upload-begin-${fileName}`,
+      });
+    },
+    onClientUploadComplete(res) {
+      res.forEach((r) => {
+        toast.dismiss(`upload-begin-${r.name}`);
+        toast.success(`Uploaded ${r.name}`);
+      });
+
+      router.refresh();
+    },
+  });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>
-        <Button asChild size="sm" variant="secondary">
-          <span>Upload</span>
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className="rounded-lg border">
-        <UploadDropzone
-          endpoint="imageUploader"
-          onClientUploadComplete={() => {
-            router.refresh();
-            if (ref.current) ref.current.click();
-          }}
-          onUploadError={(error) => {
-            setError(error ? "Please try again later." : null);
-          }}
-        />
-        <AlertDialogFooter className="flex flex-col items-center">
-          {error && <div className="text-destructive">{error}</div>}
-          <div className="flex w-full flex-row items-center justify-end">
-            <AlertDialogAction ref={ref} className="invisible">
-              Done
-            </AlertDialogAction>
-            <AlertDialogCancel
-              onClick={() => {
-                setError(null);
-              }}
-            >
-              Cancel
-            </AlertDialogCancel>
-          </div>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <div>
+      <label htmlFor="upload-button" className="cursor-pointer">
+        <UploadIcon />
+      </label>
+      <input
+        id="upload-button"
+        type="file"
+        className="sr-only"
+        {...inputProps}
+      />
+    </div>
   );
 }
