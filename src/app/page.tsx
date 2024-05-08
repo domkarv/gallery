@@ -18,7 +18,7 @@ async function Images() {
 
 export default async function HomePage() {
   return (
-    <div className="my-8 flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <SignedOut>
         <p className="text-lg font-semibold">Please sign in to view images</p>
       </SignedOut>

@@ -41,7 +41,7 @@ export default function RootLayout({
           )}
         >
           <TopNav />
-          <main className="container">{children}</main>
+          <main className="container my-8">{children}</main>
           <Toaster />
         </body>
       </html>

@@ -15,8 +15,7 @@
 - [ ] Error management (w/ Sentry)
 - [ ] Error management on Client Side
 - [ ] Add infinite scroll
-- [ ] Fix topnav
-- [ ] should be able to upload .heic files
+- [ ] Should be able to upload .heic files
 - [ ] Analytics (posthog)
 - [x] Delete button (w/ Server Actions)
 - [ ] Ratelimiting (upstash)
