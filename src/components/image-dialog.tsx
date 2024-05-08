@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogOverlay,
   DialogTrigger,
 } from "./ui/dialog";
 import type { ImageType } from "~/server/db/schema";
@@ -67,8 +66,7 @@ export default function ImageDialog({ img }: { img: ImageType }) {
           className="object-contain"
         />
       </DialogTrigger>
-      <DialogOverlay />
-      <DialogContent>
+      <DialogContent className="rounded-lg border-secondary">
         <Image
           src={img.url}
           alt={img.name}
@@ -81,7 +79,7 @@ export default function ImageDialog({ img }: { img: ImageType }) {
             {downloadLoading ? "Downloading..." : "Download"}
           </Button>
           <Button
-            variant="secondary"
+            variant="destructive"
             className="w-1/2"
             onClick={() => handleDelete()}
           >
