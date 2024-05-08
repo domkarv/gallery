@@ -1,19 +1,64 @@
+"use client";
+
 import Image from "next/image";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogOverlay,
+  DialogTrigger,
+} from "./ui/dialog";
 import type { ImageType } from "~/server/db/schema";
-import DownloadBtn from "./download-btn";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { deleteImage, getImage } from "~/server/actions";
+import { toast } from "sonner";
 
 export default function ImageDialog({ img }: { img: ImageType }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  async function handleDelete() {
+    setDeleteLoading(true);
+    try {
+      await deleteImage(img.id);
+    } catch (error) {
+      console.error({ error });
+    }
+    setDeleteLoading(false);
+    setDialogOpen(false);
+    toast.success("Image deleted successfully");
+  }
+
+  const handleDownload = async () => {
+    setDownloadLoading(true);
+    const image = await getImage(img.id);
+
+    if (!image) {
+      setDownloadLoading(false);
+      return;
+    }
+
+    const response = await fetch(image.url);
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", image.name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setDownloadLoading(false);
+    setDialogOpen(false);
+  };
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogTrigger>
         <Image
           src={img.url}
           alt={img.name}
@@ -21,8 +66,9 @@ export default function ImageDialog({ img }: { img: ImageType }) {
           width={256}
           className="object-contain"
         />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
+      </DialogTrigger>
+      <DialogOverlay />
+      <DialogContent>
         <Image
           src={img.url}
           alt={img.name}
@@ -30,13 +76,19 @@ export default function ImageDialog({ img }: { img: ImageType }) {
           width={1024}
           className="object-contain"
         />
-        <AlertDialogFooter className="flex flex-row items-center justify-center gap-4">
-          <AlertDialogAction asChild>
-            <DownloadBtn id={img.id} />
-          </AlertDialogAction>
-          <AlertDialogCancel className="m-0 w-1/2">Close</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        <DialogFooter className="flex flex-row items-center justify-center gap-4">
+          <Button className="w-1/2" onClick={() => handleDownload()}>
+            {downloadLoading ? "Downloading..." : "Download"}
+          </Button>
+          <Button
+            variant="secondary"
+            className="w-1/2"
+            onClick={() => handleDelete()}
+          >
+            {deleteLoading ? "Deleting..." : "Delete"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

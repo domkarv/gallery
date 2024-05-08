@@ -2,6 +2,9 @@
 
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
+import { images } from "./db/schema";
+import { and, eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 
 export async function getImages() {
   const user = auth();
@@ -27,4 +30,18 @@ export async function getImage(id: string) {
     where: (model, { and, eq }) =>
       and(eq(model.id, id), eq(model.userId, user.userId)),
   });
+}
+
+export async function deleteImage(id: string) {
+  const user = auth();
+
+  if (!user.userId) {
+    throw new Error("Unauthorized!");
+  }
+
+  await db
+    .delete(images)
+    .where(and(eq(images.id, id), eq(images.userId, user.userId)));
+
+  revalidateTag("/");
 }
