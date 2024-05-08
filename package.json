@@ -7,7 +7,7 @@
     "build": "next build",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
     "format": "prettier --write .",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.0.6",
     "@clerk/themes": "^2.1.2",
+    "@plaiceholder/next": "^3.0.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@t3-oss/env-nextjs": "^0.10.1",
@@ -27,6 +28,7 @@
     "lucide-react": "^0.378.0",
     "next": "^14.2.1",
     "next-themes": "^0.3.0",
+    "plaiceholder": "^3.0.0",
     "postgres": "^3.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -58,5 +60,5 @@
   "ct3aMetadata": {
     "initVersion": "7.32.0"
   },
-  "packageManager": "pnpm@9.0.6"
+  "packageManager": "pnpm@9.1.0"
 }

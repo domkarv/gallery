@@ -12,10 +12,11 @@
 - [x] Add image upload
 - [x] Use Next/Image component
 - [x] download button
-- [ ] Error management (w/ Sentry)
-- [ ] Error management on Client Side
-- [ ] Add infinite scroll
-- [ ] Should be able to upload .heic files
-- [ ] Analytics (posthog)
 - [x] Delete button (w/ Server Actions)
+- [ ] Add Masonry Layout
+- [ ] access to all your friends
+- [ ] Should be able to upload .heic files
+- [ ] Error management on Client Side
+- [ ] Error management (w/ Sentry)
+- [ ] Analytics (posthog)
 - [ ] Ratelimiting (upstash)

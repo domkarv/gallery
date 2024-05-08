@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import {
   Dialog,
@@ -8,62 +6,28 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import type { ImageType } from "~/server/db/schema";
-import { useState } from "react";
-import { Button } from "./ui/button";
-import { deleteImage, getImage } from "~/server/actions";
-import { toast } from "sonner";
+import { DeleteBtn, DownloadBtn } from "./dialog-btn";
+import { getPlaiceholder } from "plaiceholder";
 
-export default function ImageDialog({ img }: { img: ImageType }) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [downloadLoading, setDownloadLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+export default async function ImageDialog({ img }: { img: ImageType }) {
+  const buffer = await fetch(img.url).then(async (res) => {
+    return Buffer.from(await res.arrayBuffer());
+  });
 
-  async function handleDelete() {
-    setDeleteLoading(true);
-    try {
-      await deleteImage(img.id);
-    } catch (error) {
-      console.error({ error });
-    }
-    setDeleteLoading(false);
-    setDialogOpen(false);
-    toast.success("Image deleted successfully");
-  }
-
-  const handleDownload = async () => {
-    setDownloadLoading(true);
-    const image = await getImage(img.id);
-
-    if (!image) {
-      setDownloadLoading(false);
-      return;
-    }
-
-    const response = await fetch(image.url);
-    const blob = await response.blob();
-
-    const url = window.URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", image.name);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    setDownloadLoading(false);
-    setDialogOpen(false);
-  };
+  const { base64 } = await getPlaiceholder(buffer);
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog>
       <DialogTrigger>
         <Image
           src={img.url}
           alt={img.name}
           height={256}
           width={256}
+          placeholder="blur"
+          blurDataURL={base64}
           className="object-contain"
+          loading="lazy"
         />
       </DialogTrigger>
       <DialogContent className="rounded-lg border-secondary">
@@ -72,19 +36,13 @@ export default function ImageDialog({ img }: { img: ImageType }) {
           alt={img.name}
           height={1024}
           width={1024}
+          placeholder="blur"
+          blurDataURL={base64}
           className="object-contain"
         />
         <DialogFooter className="flex flex-row items-center justify-center gap-4">
-          <Button className="w-1/2" onClick={() => handleDownload()}>
-            {downloadLoading ? "Downloading..." : "Download"}
-          </Button>
-          <Button
-            variant="destructive"
-            className="w-1/2"
-            onClick={() => handleDelete()}
-          >
-            {deleteLoading ? "Deleting..." : "Delete"}
-          </Button>
+          <DownloadBtn img={img} />
+          <DeleteBtn img={img} />
         </DialogFooter>
       </DialogContent>
     </Dialog>

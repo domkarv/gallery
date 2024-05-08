@@ -8,11 +8,16 @@ async function Images() {
   const images = await getImages();
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-      {images.map((img) => {
-        return <ImageDialog img={img} key={img.id} />;
-      })}
-    </div>
+    <>
+      {images.length === 0 && (
+        <p className="text-lg font-semibold">No images found</p>
+      )}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        {images.map((img) => {
+          return <ImageDialog img={img} key={img.id} />;
+        })}
+      </div>
+    </>
   );
 }
 

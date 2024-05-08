@@ -4,8 +4,10 @@
  */
 await import("./src/env.js");
 
+import withPlaiceholder from "@plaiceholder/next";
+
 /** @type {import("next").NextConfig} */
-const config = {
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -13,6 +15,7 @@ const config = {
     ignoreDuringBuilds: true,
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -22,4 +25,4 @@ const config = {
   },
 };
 
-export default config;
+export default withPlaiceholder(nextConfig);

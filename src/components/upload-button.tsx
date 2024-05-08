@@ -59,7 +59,11 @@ export function SimpleUploadButton() {
     onClientUploadComplete(res) {
       res.forEach((r) => {
         toast.dismiss(`upload-begin-${r.name}`);
-        toast.success(`Uploaded ${r.name}`);
+        toast.success(`Uploaded ${r.name}`, {
+          style: {
+            color: "green",
+          },
+        });
       });
 
       router.refresh();
