@@ -13,11 +13,14 @@ const useUploadThingInputProps = (...args: Input) => {
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
-    const selectedFiles = Array.from(e.target.files);
-    const result = await $ut.startUpload(selectedFiles);
-
-    console.log("uploaded files", result);
-    // TODO: persist result in state maybe?
+    try {
+      const selectedFiles = Array.from(e.target.files);
+      await $ut.startUpload(selectedFiles);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
   };
 
   return {
@@ -34,6 +37,20 @@ export function SimpleUploadButton() {
   const router = useRouter();
 
   const { inputProps } = useUploadThingInputProps("imageUploader", {
+    onBeforeUploadBegin(files) {
+      files.forEach((file) => {
+        if (file.size > 8 * 1024 * 1024) {
+          toast.error("File size must be less than 8MB", {
+            id: `upload-error-${file.name}`,
+            style: {
+              color: "red",
+            },
+          });
+        }
+      });
+
+      return files;
+    },
     onUploadBegin(fileName) {
       toast.loading(`Uploading ${fileName}`, {
         id: `upload-begin-${fileName}`,
