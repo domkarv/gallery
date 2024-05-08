@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { images } from "./db/schema";
 import { and, eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
+import { UTApi } from "uploadthing/server";
 
 export async function getImages() {
   const user = auth();
@@ -33,15 +34,25 @@ export async function getImage(id: string) {
 }
 
 export async function deleteImage(id: string) {
+  const utapi = new UTApi();
+
   const user = auth();
 
   if (!user.userId) {
     throw new Error("Unauthorized!");
   }
 
-  await db
+  const imageURLObj = await db
     .delete(images)
-    .where(and(eq(images.id, id), eq(images.userId, user.userId)));
+    .where(and(eq(images.id, id), eq(images.userId, user.userId)))
+    .returning({ url: images.url });
+
+  const imageURLs = imageURLObj.map((obj) => {
+    const parts = obj.url.split("/");
+    return parts[parts.length - 1];
+  }) as string[];
+
+  await utapi.deleteFiles(imageURLs);
 
   revalidateTag("/");
 }
