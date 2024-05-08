@@ -1,5 +1,7 @@
 # Friends Gallery (T3 Stack)
 
+https://youtu.be/d5x0JCZbAJs
+
 ### TODO
 
 - [x] Make it deploy (vercel)
@@ -14,7 +16,7 @@
 - [x] download button
 - [x] Delete button (w/ Server Actions)
 - [ ] Add Masonry Layout
-- [ ] access to all your friends
+- [ ] access to all your friends (add functionality to delete only most upvoted image)
 - [ ] Should be able to upload .heic files
 - [ ] Error management on Client Side
 - [ ] Error management (w/ Sentry)

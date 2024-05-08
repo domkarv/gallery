@@ -38,7 +38,6 @@ export function DeleteBtn({ img }: { img: ImageType }) {
     <>
       <Button
         variant="destructive"
-        size="lg"
         className="w-1/2 rounded-lg"
         onClick={() => handleDelete()}
       >
@@ -82,11 +81,7 @@ export function DownloadBtn({ img }: { img: ImageType }) {
 
   return (
     <>
-      <Button
-        size="lg"
-        className="w-1/2 rounded-lg"
-        onClick={() => handleDownload()}
-      >
+      <Button className="w-1/2 rounded-lg" onClick={() => handleDownload()}>
         {loading ? "Downloading..." : "Download"}
       </Button>
       <DialogClose className="sr-only" ref={ref}>
