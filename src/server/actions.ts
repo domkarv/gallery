@@ -2,12 +2,12 @@
 
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
-import { images } from "./db/schema";
+import { type ImageType, images } from "./db/schema";
 import { and, eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { UTApi } from "uploadthing/server";
 
-export async function getImages() {
+export async function getImages(): Promise<ImageType[]> {
   const user = auth();
 
   if (!user.userId) {
