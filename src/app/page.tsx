@@ -1,27 +1,7 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import ImageDialog from "~/components/image-dialog";
-import { getImages } from "~/server/actions";
+import { ImagesGrid } from "~/components/image-grid";
 
 export const dynamic = "force-dynamic";
-
-async function Images() {
-  const images = await getImages();
-
-  return (
-    <>
-      {images.length === 0 && (
-        <p className="text-lg font-semibold">
-          {`😥 No images found! Upload images 🙄`}
-        </p>
-      )}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-        {images.map((img) => {
-          return <ImageDialog img={img} key={img.id} />;
-        })}
-      </div>
-    </>
-  );
-}
 
 export default async function HomePage() {
   return (
@@ -32,7 +12,7 @@ export default async function HomePage() {
         </p>
       </SignedOut>
       <SignedIn>
-        <Images />
+        <ImagesGrid />
       </SignedIn>
     </div>
   );
