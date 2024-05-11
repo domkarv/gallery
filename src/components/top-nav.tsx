@@ -11,7 +11,7 @@ export function TopNav() {
       <div className="flex flex-row items-center gap-4">
         <SignedOut>
           <Button asChild variant="outline" size="sm">
-            <SignInButton>Sign In</SignInButton>
+            <SignInButton mode="modal">Sign In</SignInButton>
           </Button>
         </SignedOut>
         <SignedIn>
