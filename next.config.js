@@ -8,6 +8,11 @@ import withPlaiceholder from "@plaiceholder/next";
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+   logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

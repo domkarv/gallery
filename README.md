@@ -1,7 +1,3 @@
-# Friends Gallery (T3 Stack)
-
-https://youtu.be/d5x0JCZbAJs
-
 ### TODO
 
 - [x] Make it deploy (vercel)
