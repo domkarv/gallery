@@ -1,13 +1,15 @@
+import { CircleXIcon } from "lucide-react";
 import Image from "next/image";
+import { getPlaiceholder } from "plaiceholder";
+import type { ImageType } from "~/server/db/schema";
+import { DeleteBtn, DownloadBtn } from "./dialog-btn";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTrigger,
 } from "./ui/dialog";
-import type { ImageType } from "~/server/db/schema";
-import { DeleteBtn, DownloadBtn } from "./dialog-btn";
-import { getPlaiceholder } from "plaiceholder";
 
 export default async function ImageDialog({ img }: { img: ImageType }) {
   const buffer = await fetch(img.url).then(async (res) => {
@@ -30,6 +32,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
           loading="lazy"
         />
       </DialogTrigger>
+
       <DialogContent className="rounded-lg border-secondary">
         <Image
           src={img.url}
@@ -40,10 +43,20 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
           blurDataURL={base64}
           className="object-contain"
         />
+
         <DialogFooter className="flex flex-row items-center justify-center gap-4">
           <DownloadBtn img={img} />
           <DeleteBtn img={img} />
         </DialogFooter>
+
+        <DialogClose asChild>
+          <button>
+            <CircleXIcon
+              className="absolute right-3 top-3"
+              aria-label="Close"
+            />
+          </button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );
