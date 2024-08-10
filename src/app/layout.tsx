@@ -1,15 +1,11 @@
-import "@uploadthing/react/styles.css";
 import "~/styles/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import type { Metadata } from "next";
+import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { extractRouterConfig } from "uploadthing/server";
 import { TopNav } from "~/components/top-nav";
 import { cn } from "~/lib/utils";
-import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from "~/components/ui/sonner";
 
 const font = Poppins({
@@ -53,8 +49,6 @@ export default function RootLayout({
   return (
     <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en" suppressHydrationWarning>
-        <head />
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <body
           className={cn(
             "min-h-screen scroll-smooth font-poppins antialiased",

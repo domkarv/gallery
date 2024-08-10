@@ -46,7 +46,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
 
         <DialogFooter className="flex flex-row items-center justify-center gap-4">
           <DownloadBtn img={img} />
-          <DeleteBtn img={img} />
+          <DeleteBtn publicId={img.publicId} />
         </DialogFooter>
 
         <DialogClose asChild>

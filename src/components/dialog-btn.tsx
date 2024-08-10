@@ -8,15 +8,16 @@ import { Button } from "./ui/button";
 import { DialogClose } from "./ui/dialog";
 import { useRouter } from "next/navigation";
 
-export function DeleteBtn({ img }: { img: ImageType }) {
+export function DeleteBtn({ publicId }: { publicId: string }) {
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   async function handleDelete() {
     setLoading(true);
+
     try {
-      await deleteImage(img.id);
+      await deleteImage(publicId);
 
       if (ref.current) ref.current.click();
     } catch (error) {

@@ -1,86 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useUploadThing } from "~/utils/uploadthing";
+// import { toast } from "sonner";
 import { UploadIcon } from "lucide-react";
-
-type Input = Parameters<typeof useUploadThing>;
-
-const useUploadThingInputProps = (...args: Input) => {
-  const $ut = useUploadThing(...args);
-
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-
-    try {
-      const selectedFiles = Array.from(e.target.files);
-      await $ut.startUpload(selectedFiles);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  };
-
-  return {
-    inputProps: {
-      onChange,
-      multiple: ($ut.permittedFileInfo?.config?.image?.maxFileCount ?? 1) > 1,
-      accept: "image/*",
-    },
-    isUploading: $ut.isUploading,
-  };
-};
+import { CldUploadButton } from "next-cloudinary";
+import { uploadImage } from "~/server/actions";
 
 export function SimpleUploadButton() {
-  const router = useRouter();
-
-  const { inputProps } = useUploadThingInputProps("imageUploader", {
-    onBeforeUploadBegin(files) {
-      files.forEach((file) => {
-        if (file.size > 8 * 1024 * 1024) {
-          toast.error("File size must be less than 8MB", {
-            id: `upload-error-${file.name}`,
-            style: {
-              color: "red",
-            },
-          });
-        }
-      });
-
-      return files;
-    },
-    onUploadBegin(fileName) {
-      toast.loading(`Uploading ${fileName}`, {
-        id: `upload-begin-${fileName}`,
-      });
-    },
-    onClientUploadComplete(res) {
-      res.forEach((r) => {
-        toast.dismiss(`upload-begin-${r.name}`);
-        toast.success(`Uploaded ${r.name}`, {
-          style: {
-            color: "green",
-          },
-        });
-      });
-
-      router.refresh();
-    },
-  });
-
   return (
-    <div>
-      <label htmlFor="upload-button" className="cursor-pointer">
-        <UploadIcon />
-      </label>
-      <input
-        id="upload-button"
-        type="file"
-        className="sr-only"
-        {...inputProps}
-      />
-    </div>
+    <CldUploadButton
+      uploadPreset="next_cloudinary_preset"
+      onSuccess={async (res) => {
+        await uploadImage(res.info);
+      }}
+    >
+      <UploadIcon />
+    </CldUploadButton>
   );
 }
