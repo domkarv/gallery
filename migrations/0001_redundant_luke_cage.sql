@@ -1,1 +1,0 @@
-ALTER TABLE "friends-gallery_image" ADD COLUMN "public_id" varchar(256) NOT NULL;
