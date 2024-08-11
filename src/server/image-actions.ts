@@ -60,9 +60,13 @@ export async function deleteImage(id: string) {
   revalidatePath("/");
 }
 
-export async function uploadImage(
-  info: string | CloudinaryUploadWidgetInfo | undefined,
-) {
+export async function uploadImage({
+  info,
+  groupId,
+}: {
+  info: string | CloudinaryUploadWidgetInfo | undefined;
+  groupId: string;
+}) {
   const user = auth();
 
   if (!user.userId) {
@@ -73,12 +77,13 @@ export async function uploadImage(
     throw new Error("Failed to read images!");
   }
 
-  // await db.insert(images).values({
-  //   url: info.url,
-  //   name: info.original_filename,
-  //   userId: user.userId,
-  //   publicId: info.public_id,
-  // });
+  await db.insert(images).values({
+    url: info.url,
+    name: info.original_filename,
+    userId: user.userId,
+    publicId: info.public_id,
+    groupId: groupId,
+  });
 
   revalidatePath("/");
 }

@@ -12,12 +12,12 @@ export async function ImagesGrid() {
   return (
     <>
       {images.length === 0 && (
-        <p className="text-lg font-semibold">
+        <p className="text-balance text-center text-sm font-semibold sm:text-lg">
           {`😥 No images found! Upload images 🙄`}
         </p>
       )}
 
-      <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {[getColumns(0), getColumns(1), getColumns(2), getColumns(3)].map(
           (column, idx) => {
             return (

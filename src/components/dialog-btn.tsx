@@ -1,5 +1,6 @@
 "use client";
 
+import { DownloadIcon, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -39,9 +40,10 @@ export function DeleteBtn({ publicId }: { publicId: string }) {
     <>
       <Button
         variant="destructive"
-        className="w-1/2 rounded-lg"
+        className="w-1/2 gap-2 rounded-lg"
         onClick={() => handleDelete()}
       >
+        <TrashIcon className="size-4" />
         {loading ? "Deleting..." : "Delete"}
       </Button>
       <DialogClose className="sr-only" ref={ref}>
@@ -82,7 +84,12 @@ export function DownloadBtn({ img }: { img: ImageType }) {
 
   return (
     <>
-      <Button className="w-1/2 rounded-lg" onClick={() => handleDownload()}>
+      <Button
+        variant="outline"
+        className="w-1/2 gap-2 rounded-lg"
+        onClick={() => handleDownload()}
+      >
+        <DownloadIcon className="size-4" />
         {loading ? "Downloading..." : "Download"}
       </Button>
       <DialogClose className="sr-only" ref={ref}>

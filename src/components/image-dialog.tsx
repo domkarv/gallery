@@ -1,4 +1,4 @@
-import { CircleXIcon } from "lucide-react";
+import { CircleXIcon, ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import { getPlaiceholder } from "plaiceholder";
 import type { ImageType } from "~/server/db/schema";
@@ -8,6 +8,7 @@ import {
   DialogClose,
   DialogContent,
   DialogFooter,
+  DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
 
@@ -19,45 +20,58 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
   const { base64 } = await getPlaiceholder(buffer);
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Image
-          src={img.url}
-          alt={img.name}
-          height={256}
-          width={256}
-          placeholder="blur"
-          blurDataURL={base64}
-          className="object-contain"
-          loading="lazy"
-        />
-      </DialogTrigger>
+    <div className="group relative">
+      <Image
+        src={img.url}
+        alt={img.name}
+        width={400}
+        height={400}
+        className="h-auto w-full object-contain"
+        placeholder="blur"
+        blurDataURL={base64}
+        loading="lazy"
+      />
 
-      <DialogContent className="rounded-lg border-secondary">
-        <Image
-          src={img.url}
-          alt={img.name}
-          height={1024}
-          width={1024}
-          placeholder="blur"
-          blurDataURL={base64}
-          className="object-contain"
-        />
+      <div className="absolute bottom-2 left-2 rounded-md bg-background/80 px-2 py-1 text-xs text-muted-foreground">
+        <span>{img.createdAt.toLocaleString()}</span>
+      </div>
 
-        <DialogFooter className="flex flex-row items-center justify-center gap-4">
-          <DownloadBtn img={img} />
-          <DeleteBtn publicId={img.publicId} />
-        </DialogFooter>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="absolute inset-0 flex cursor-pointer items-center justify-center bg-background/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <ExternalLinkIcon className="size-8" />
+          </div>
+        </DialogTrigger>
 
-        <DialogClose asChild>
-          <button>
-            <CircleXIcon
-              className="absolute right-3 top-3"
-              aria-label="Close"
-            />
-          </button>
-        </DialogClose>
-      </DialogContent>
-    </Dialog>
+        <DialogContent aria-describedby={undefined} className="mb-0">
+          <DialogTitle className="sr-only">{img.name}</DialogTitle>
+
+          <Image
+            src={img.url}
+            alt={img.name}
+            width={800}
+            height={800}
+            className="h-auto max-h-[70vh] w-full object-contain"
+            placeholder="blur"
+            blurDataURL={base64}
+            loading="lazy"
+          />
+
+          <DialogFooter className="flex w-full flex-row items-center justify-between gap-4">
+            <DownloadBtn img={img} />
+            <DeleteBtn publicId={img.publicId} />
+          </DialogFooter>
+
+          <DialogClose asChild>
+            <button>
+              <CircleXIcon
+                className="absolute right-3 top-3"
+                aria-label="Close"
+              />
+            </button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

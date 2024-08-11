@@ -81,6 +81,23 @@ export async function getGroups() {
     if (error instanceof Error) console.error(error.message);
     else console.error(error);
 
-    throw new Error("Error occured while creating group");
+    throw new Error("Error occured while reading groups");
+  }
+}
+
+export async function getGroupInfo({ name }: { name: string }) {
+  if (!name) {
+    throw new Error("No Group found!");
+  }
+
+  try {
+    return await db.query.groups.findFirst({
+      where: (model, { eq }) => eq(model.name, name),
+    });
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while reading group info");
   }
 }
