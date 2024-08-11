@@ -1,1 +1,0 @@
-ALTER TABLE "friends-gallery_user" ALTER COLUMN "name" DROP NOT NULL;

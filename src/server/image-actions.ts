@@ -9,7 +9,11 @@ import { env } from "~/env";
 import { db } from "./db";
 import { type ImageType, groups, images } from "./db/schema";
 
-export async function getImages(): Promise<ImageType[]> {
+export async function getImages({
+  groupId,
+}: {
+  groupId: string;
+}): Promise<ImageType[]> {
   const user = auth();
 
   if (!user.userId) {
@@ -18,7 +22,8 @@ export async function getImages(): Promise<ImageType[]> {
 
   try {
     return await db.query.images.findMany({
-      where: (model, { eq }) => eq(model.userId, user.userId),
+      where: (model, { eq, and }) =>
+        and(eq(model.userId, user.userId), eq(model.groupId, groupId)),
       orderBy: (model, { desc }) => desc(model.createdAt),
     });
   } catch (error) {

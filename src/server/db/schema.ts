@@ -10,7 +10,7 @@ import { pgTableCreator, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `friends-gallery_${name}`);
+export const createTable = pgTableCreator((name) => `gallery_${name}`);
 
 export const images = createTable("image", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -27,10 +27,6 @@ export const groups = createTable("group", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 256 }).notNull().unique(),
   admin: varchar("admin", { length: 256 }).notNull(),
-  members: varchar("members", { length: 256 })
-    .array()
-    .default(sql`ARRAY[]::text[]`)
-    .notNull(),
   images: varchar("images", { length: 256 })
     .array()
     .default(sql`ARRAY[]::text[]`)
@@ -40,43 +36,16 @@ export const groups = createTable("group", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const users = createTable("user", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  avatar: varchar("name", { length: 256 }),
-  groups: varchar("groups", { length: 256 })
-    .array()
-    .default(sql`ARRAY[]::text[]`)
-    .notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-export const groupRelation = relations(groups, ({ many, one }) => ({
-  "friends-gallery_image": many(images),
-  "friends-gallery_user": many(users),
-  "friends-gallery_admin": one(users, {
-    fields: [groups.admin],
-    references: [users.id],
-  }),
-}));
-
-export const userRelation = relations(users, ({ many }) => ({
-  "friends-gallery_group": many(groups),
-  "friends-gallery_image": many(images),
+export const groupRelation = relations(groups, ({ many }) => ({
+  gallery_image: many(images),
 }));
 
 export const imageRelation = relations(images, ({ one }) => ({
-  "friends-gallery_group": one(groups, {
+  gallery_group: one(groups, {
     fields: [images.groupId],
     references: [groups.images],
-  }),
-  "friends-gallery_user": one(users, {
-    fields: [images.groupId],
-    references: [users.id],
   }),
 }));
 
 export type ImageType = typeof images.$inferSelect;
 export type GroupType = InferSelectModel<typeof groups>;
-export type UserType = InferSelectModel<typeof users>;

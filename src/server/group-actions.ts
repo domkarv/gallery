@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { arrayContains, eq, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "./db";
 import { groups } from "./db/schema";
 
@@ -64,19 +64,11 @@ export async function getGroups() {
   const user = auth();
 
   if (!user.userId) {
-    throw new Error("Unauthorized!");
+    return null;
   }
 
   try {
-    return await db
-      .select()
-      .from(groups)
-      .where(
-        or(
-          eq(groups.admin, user.userId),
-          arrayContains(groups.members, [user.userId]),
-        ),
-      );
+    return await db.select().from(groups).where(eq(groups.admin, user.userId));
   } catch (error) {
     if (error instanceof Error) console.error(error.message);
     else console.error(error);
@@ -85,14 +77,17 @@ export async function getGroups() {
   }
 }
 
-export async function getGroupInfo({ name }: { name: string }) {
-  if (!name) {
-    throw new Error("No Group found!");
+export async function getGroupInfo({ id }: { id: string }) {
+  const user = auth();
+
+  if (!id || !user.userId) {
+    return null;
   }
 
   try {
     return await db.query.groups.findFirst({
-      where: (model, { eq }) => eq(model.name, name),
+      where: (model, { eq, and }) =>
+        and(eq(model.id, id), eq(model.admin, user.userId)),
     });
   } catch (error) {
     if (error instanceof Error) console.error(error.message);

@@ -1,11 +1,11 @@
 {
-  "id": "dbab6b78-3907-4f15-9b13-18687e9aacec",
+  "id": "80e7c268-9f22-4b12-a461-76869583474a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.friends-gallery_group": {
-      "name": "friends-gallery_group",
+    "public.gallery_group": {
+      "name": "gallery_group",
       "schema": "",
       "columns": {
         "id": {
@@ -27,19 +27,18 @@
           "primaryKey": false,
           "notNull": true
         },
-        "members": {
-          "name": "members",
-          "type": "varchar(256)[]",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "ARRAY[]::text[]"
-        },
         "images": {
           "name": "images",
           "type": "varchar(256)[]",
           "primaryKey": false,
           "notNull": true,
           "default": "ARRAY[]::text[]"
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -60,8 +59,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "friends-gallery_group_name_unique": {
-          "name": "friends-gallery_group_name_unique",
+        "gallery_group_name_unique": {
+          "name": "gallery_group_name_unique",
           "nullsNotDistinct": false,
           "columns": [
             "name"
@@ -69,8 +68,8 @@
         }
       }
     },
-    "public.friends-gallery_image": {
-      "name": "friends-gallery_image",
+    "public.gallery_image": {
+      "name": "gallery_image",
       "schema": "",
       "columns": {
         "id": {
@@ -109,50 +108,6 @@
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.friends-gallery_user": {
-      "name": "friends-gallery_user",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "groups": {
-          "name": "groups",
-          "type": "varchar(256)[]",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "ARRAY[]::text[]"
         },
         "created_at": {
           "name": "created_at",

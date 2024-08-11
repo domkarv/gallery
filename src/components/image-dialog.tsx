@@ -29,6 +29,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
         className="h-auto w-full object-contain"
         placeholder="blur"
         blurDataURL={base64}
+        unoptimized
         loading="lazy"
       />
 
@@ -54,6 +55,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
             className="h-auto max-h-[70vh] w-full object-contain"
             placeholder="blur"
             blurDataURL={base64}
+            unoptimized
             loading="lazy"
           />
 

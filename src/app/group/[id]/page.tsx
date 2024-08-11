@@ -1,15 +1,25 @@
+import { auth } from "@clerk/nextjs/server";
 import { ImagesGrid } from "~/components/image-grid";
 import { UploadButton } from "~/components/upload-button";
 import { getGroupInfo } from "~/server/group-actions";
 
 interface PageProps {
   params: {
-    name: string;
+    id: string;
   };
 }
 
 export default async function Page({ params }: PageProps) {
-  const groupInfo = await getGroupInfo({ name: params.name });
+  const user = auth();
+  const groupInfo = await getGroupInfo({ id: params.id });
+
+  if (user.userId !== groupInfo?.admin) {
+    return (
+      <p className="text-balance text-center text-sm font-semibold sm:text-lg">
+        {`😥 You are not authenticated 🙄`}
+      </p>
+    );
+  }
 
   if (!groupInfo) {
     return (
@@ -22,11 +32,11 @@ export default async function Page({ params }: PageProps) {
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-row justify-between">
-        <h1 className="text-5xl font-bold text-secondary">{params.name}</h1>
+        <h1 className="text-5xl font-bold text-secondary">{groupInfo.name}</h1>
         <UploadButton groupId={groupInfo.id} />
       </div>
 
-      <ImagesGrid />
+      <ImagesGrid groupId={params.id} />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { getImages } from "~/server/image-actions";
 import ImageDialog from "./image-dialog";
 
-export async function ImagesGrid() {
-  const images = await getImages();
+export async function ImagesGrid({ groupId }: { groupId: string }) {
+  const images = await getImages({ groupId });
   const MAX_COLUMNS = 4;
 
   function getColumns(colNum: number) {

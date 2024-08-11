@@ -15,28 +15,17 @@ const font = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Friend's Gallery App",
-  description: "Place where you can share your photos with friends.",
+  title: "Gallery App",
+  description: "Place where you can group your photos.",
   keywords: [
     "gallery",
     "photos",
-    "friends",
     "sharing",
     "images",
-    "friends gallery",
-    "friends photos",
-    "friends sharing",
-    "friends images",
-    "friends app",
     "gallery app",
     "photos app",
     "sharing app",
     "images app",
-    "friend's gallery",
-    "friend's photos",
-    "friend's sharing",
-    "friend's images",
-    "friend's app",
   ],
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };

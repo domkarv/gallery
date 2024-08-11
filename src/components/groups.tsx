@@ -4,6 +4,14 @@ import GroupCard from "./group-card";
 export default async function Groups() {
   const groups = await getGroups();
 
+  if (!groups) {
+    return (
+      <p className="text-balance text-center text-sm font-semibold sm:text-lg">
+        {`😥 You are not authenticated 🙄`}
+      </p>
+    );
+  }
+
   return groups.length == 0 ? (
     <p className="text-balance text-center text-sm font-semibold sm:text-lg">
       {`😥 No groups found! Join or create group 🙄`}
