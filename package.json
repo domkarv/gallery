@@ -22,6 +22,7 @@
     "@clerk/themes": "^2.1.19",
     "@neondatabase/serverless": "^0.9.4",
     "@plaiceholder/next": "^3.0.0",
+    "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",

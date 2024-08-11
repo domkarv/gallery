@@ -45,7 +45,7 @@ export default function CreateGroup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm">Create</Button>
+        <Button size="sm">Create Group</Button>
       </DialogTrigger>
 
       <DialogContent
@@ -53,7 +53,8 @@ export default function CreateGroup() {
         className="rounded-lg border-secondary"
       >
         <form action={formAction} className="flex flex-col gap-4">
-          <DialogTitle className="sr-only">Create</DialogTitle>
+          <DialogTitle className="sr-only">Create Group</DialogTitle>
+
           <DialogDescription asChild>
             <div className="flex flex-col items-start gap-4">
               <Label htmlFor="group_name">Enter group name</Label>
@@ -61,6 +62,7 @@ export default function CreateGroup() {
               {state.error && <p className="text-sm">{state.error}</p>}
             </div>
           </DialogDescription>
+
           <DialogFooter>
             <Button type="submit" className="w-full">
               Create

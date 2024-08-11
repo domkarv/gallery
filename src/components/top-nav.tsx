@@ -1,7 +1,8 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Button } from "./ui/button";
-import { SimpleUploadButton } from "./upload-button";
 import Link from "next/link";
+import CreateGroup from "./create-group";
+import JoinGroup from "./join-group";
+import { Button } from "./ui/button";
 
 export function TopNav() {
   return (
@@ -14,8 +15,10 @@ export function TopNav() {
             <SignInButton mode="modal">Sign In</SignInButton>
           </Button>
         </SignedOut>
+
         <SignedIn>
-          <SimpleUploadButton />
+          <JoinGroup />
+          <CreateGroup />
           <UserButton />
         </SignedIn>
       </div>

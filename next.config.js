@@ -24,6 +24,9 @@ const nextConfig = {
       {
         hostname: "res.cloudinary.com",
       },
+      {
+        hostname: "generated.vusercontent.net",
+      },
     ],
   },
 };

@@ -1,16 +1,18 @@
-import CreateGroup from "./create-group";
-import JoinGroup from "./join-group";
+import { getGroups } from "~/server/group-actions";
+import GroupCard from "./group-card";
 
-export default function Groups() {
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <p className="text-balance text-center text-sm font-semibold">
-        {`😥 No groups found! Join or create group 🙄`}
-      </p>
-      <div className="flex flex-row items-center justify-center gap-8">
-        <JoinGroup />
-        <CreateGroup />
-      </div>
+export default async function Groups() {
+  const groups = await getGroups();
+
+  return groups.length == 0 ? (
+    <p className="text-balance text-center text-sm font-semibold sm:text-lg">
+      {`😥 No groups found! Join or create group 🙄`}
+    </p>
+  ) : (
+    <div className="grid grid-cols-1 items-center gap-6 bg-background md:grid-cols-3">
+      {groups.map((el) => {
+        return <GroupCard key={el.id} group={el} />;
+      })}
     </div>
   );
 }

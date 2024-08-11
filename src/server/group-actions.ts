@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
+import { arrayContains, eq, or } from "drizzle-orm";
 import { db } from "./db";
 import { groups } from "./db/schema";
 
@@ -51,6 +52,31 @@ export async function createGroupAction(prevState: State, formData: FormData) {
       success: true,
       groupName,
     };
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while creating group");
+  }
+}
+
+export async function getGroups() {
+  const user = auth();
+
+  if (!user.userId) {
+    throw new Error("Unauthorized!");
+  }
+
+  try {
+    return await db
+      .select()
+      .from(groups)
+      .where(
+        or(
+          eq(groups.admin, user.userId),
+          arrayContains(groups.members, [user.userId]),
+        ),
+      );
   } catch (error) {
     if (error instanceof Error) console.error(error.message);
     else console.error(error);
