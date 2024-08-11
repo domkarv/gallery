@@ -24,7 +24,7 @@ export default function CreateGroup() {
   const [state, formAction] = useFormState(createGroupAction, {
     success: false,
     error: undefined,
-    groupName: "",
+    groupId: "",
   });
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function CreateGroup() {
 
       closeRef.current?.click();
 
-      router.push(`/group/${state.groupName}`);
+      router.push(`/group/${state.groupId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.success]);

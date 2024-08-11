@@ -12,7 +12,7 @@ export async function joinGroupAction(formData: FormData) {
 interface State {
   error?: string;
   success?: boolean;
-  groupName?: string;
+  groupId?: string;
 }
 
 export async function createGroupAction(prevState: State, formData: FormData) {
@@ -43,14 +43,19 @@ export async function createGroupAction(prevState: State, formData: FormData) {
       };
     }
 
-    await db.insert(groups).values({
-      name: groupName,
-      admin: user.userId,
-    });
+    const group = await db
+      .insert(groups)
+      .values({
+        name: groupName,
+        admin: user.userId,
+      })
+      .returning({
+        id: groups.id,
+      });
 
     return {
       success: true,
-      groupName,
+      groupId: group[0]?.id,
     };
   } catch (error) {
     if (error instanceof Error) console.error(error.message);

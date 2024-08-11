@@ -14,7 +14,7 @@ export default async function Groups() {
 
   return groups.length == 0 ? (
     <p className="text-balance text-center text-sm font-semibold sm:text-lg">
-      {`😥 No groups found! Join or create group 🙄`}
+      {`😥 No groups found! Create group 🙄`}
     </p>
   ) : (
     <div className="grid grid-cols-1 items-center gap-6 bg-background md:grid-cols-3">
