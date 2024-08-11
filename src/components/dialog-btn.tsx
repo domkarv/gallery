@@ -1,12 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { deleteImage, getImage } from "~/server/actions";
 import type { ImageType } from "~/server/db/schema";
+import { deleteImage, getImage } from "~/server/image-actions";
 import { Button } from "./ui/button";
 import { DialogClose } from "./ui/dialog";
-import { useRouter } from "next/navigation";
 
 export function DeleteBtn({ publicId }: { publicId: string }) {
   const [loading, setLoading] = useState(false);

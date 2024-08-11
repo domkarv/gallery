@@ -1,6 +1,10 @@
 "use client";
 
-import { createGroupAction } from "~/server/actions";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { useFormState } from "react-dom";
+import { toast } from "sonner";
+import { createGroupAction } from "~/server/group-actions";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -13,10 +17,6 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { useFormState } from "react-dom";
-import { toast } from "sonner";
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 
 export default function CreateGroup() {
   const router = useRouter();

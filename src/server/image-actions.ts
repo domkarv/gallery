@@ -7,7 +7,7 @@ import { type CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { revalidatePath } from "next/cache";
 import { env } from "~/env";
 import { db } from "./db";
-import { type ImageType, groups, images } from "./db/schema";
+import { type ImageType, images } from "./db/schema";
 
 export async function getImages(): Promise<ImageType[]> {
   const user = auth();
@@ -81,55 +81,4 @@ export async function uploadImage(
   // });
 
   revalidatePath("/");
-}
-
-interface State {
-  error?: string;
-  success?: boolean;
-  groupName?: string;
-}
-
-export async function createGroupAction(prevState: State, formData: FormData) {
-  const groupName = formData.get("group_name");
-
-  if (!groupName || typeof groupName !== "string") {
-    return {
-      success: false,
-      error: "Please provide valid group name",
-    };
-  }
-
-  const user = auth();
-
-  if (!user.userId) {
-    throw new Error("Unauthorized!");
-  }
-
-  try {
-    const isGroupExists = await db.query.groups.findFirst({
-      where: (model, { eq }) => eq(model.name, groupName),
-    });
-
-    if (isGroupExists) {
-      return {
-        success: false,
-        error: `Group with name "${groupName}" already exists`,
-      };
-    }
-
-    await db.insert(groups).values({
-      name: groupName,
-      admin: user.userId,
-    });
-
-    return {
-      success: true,
-      groupName,
-    };
-  } catch (error) {
-    if (error instanceof Error) console.error(error.message);
-    else console.error(error);
-
-    throw new Error("Error occured while creating group");
-  }
 }

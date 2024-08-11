@@ -1,9 +1,8 @@
 "use client";
 
-// import { toast } from "sonner";
 import { UploadIcon } from "lucide-react";
 import { CldUploadButton } from "next-cloudinary";
-import { uploadImage } from "~/server/actions";
+import { uploadImage } from "~/server/image-actions";
 
 export function SimpleUploadButton() {
   return (

@@ -1,4 +1,4 @@
-import { getImages } from "~/server/actions";
+import { getImages } from "~/server/image-actions";
 import ImageDialog from "./image-dialog";
 
 export async function ImagesGrid() {
