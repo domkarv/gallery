@@ -35,6 +35,7 @@ export const groups = createTable("group", {
     .array()
     .default(sql`ARRAY[]::text[]`)
     .notNull(),
+  thumbnail: varchar("thumbnail", { length: 256 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -42,6 +43,7 @@ export const groups = createTable("group", {
 export const users = createTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
+  avatar: varchar("name", { length: 256 }),
   groups: varchar("groups", { length: 256 })
     .array()
     .default(sql`ARRAY[]::text[]`)

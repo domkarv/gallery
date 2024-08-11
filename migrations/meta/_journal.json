@@ -8,6 +8,20 @@
       "when": 1723367942422,
       "tag": "0000_woozy_sentinels",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1723380196711,
+      "tag": "0001_brave_mentor",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1723385471019,
+      "tag": "0002_flowery_proudstar",
+      "breakpoints": true
     }
   ]
 }
