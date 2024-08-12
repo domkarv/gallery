@@ -54,7 +54,13 @@ export async function getImage(id: string) {
   }
 }
 
-export async function deleteImage(id: string) {
+export async function deleteImage({
+  publicId,
+  groupId,
+}: {
+  publicId: string;
+  groupId: string;
+}) {
   const user = auth();
 
   if (!user.userId) {
@@ -64,8 +70,16 @@ export async function deleteImage(id: string) {
   try {
     await db
       .delete(images)
-      .where(and(eq(images.publicId, id), eq(images.userId, user.userId)))
-      .returning({ url: images.url });
+      .where(
+        and(eq(images.publicId, publicId), eq(images.userId, user.userId)),
+      );
+
+    await db
+      .update(groups)
+      .set({
+        images: sql`array_remove(${groups.images}, ${publicId})`,
+      })
+      .where(eq(groups.id, groupId));
 
     cloudinary.config({
       api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
@@ -73,7 +87,7 @@ export async function deleteImage(id: string) {
       api_secret: env.CLOUDINARY_API_SECRET,
     });
 
-    await cloudinary.uploader.destroy(id, () => {
+    await cloudinary.uploader.destroy(publicId, () => {
       console.log("Image Deleted!");
     });
   } catch (error) {
@@ -114,13 +128,13 @@ export async function uploadImage({
         groupId: groupId,
       })
       .returning({
-        id: images.id,
+        publicId: images.publicId,
       });
 
     await db
       .update(groups)
       .set({
-        images: sql`array_append(${groups.images}, ${image[0]!.id})`,
+        images: sql`array_append(${groups.images}, ${image[0]!.publicId})`,
       })
       .where(eq(groups.id, groupId));
   } catch (error) {

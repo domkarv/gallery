@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -16,11 +15,11 @@ import { Card } from "~/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { type GroupType } from "~/server/db/schema";
+import DeleteGroupBtn from "./delete-group-btn";
 
 export default function GroupCard({ group }: { group: GroupType }) {
   return (
@@ -52,11 +51,17 @@ export default function GroupCard({ group }: { group: GroupType }) {
           <EllipsisVerticalIcon className="absolute right-3 top-3 cursor-pointer stroke-black" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Change Thumbnail</DropdownMenuItem>
-          <DropdownMenuItem>Rename</DropdownMenuItem>
+          <DropdownMenuLabel>
+            <button className="w-full text-start font-normal">
+              Change Thumbnail
+            </button>
+          </DropdownMenuLabel>
+          <DropdownMenuLabel>
+            <button className="w-full text-start font-normal">Rename</button>
+          </DropdownMenuLabel>
           <AlertDialog>
-            <AlertDialogTrigger>
-              <DropdownMenuLabel className="text-destructive">
+            <AlertDialogTrigger className="w-full">
+              <DropdownMenuLabel className="text-start text-destructive">
                 Delete
               </DropdownMenuLabel>
             </AlertDialogTrigger>
@@ -70,7 +75,7 @@ export default function GroupCard({ group }: { group: GroupType }) {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <DeleteGroupBtn groupId={group.id} />
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

@@ -9,7 +9,13 @@ import { deleteImage, getImage } from "~/server/image-actions";
 import { Button } from "./ui/button";
 import { DialogClose } from "./ui/dialog";
 
-export function DeleteBtn({ publicId }: { publicId: string }) {
+export function DeleteBtn({
+  publicId,
+  groupId,
+}: {
+  publicId: string;
+  groupId: string;
+}) {
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLButtonElement>(null);
   const router = useRouter();
@@ -18,7 +24,7 @@ export function DeleteBtn({ publicId }: { publicId: string }) {
     setLoading(true);
 
     try {
-      await deleteImage(publicId);
+      await deleteImage({ publicId, groupId });
 
       if (ref.current) ref.current.click();
     } catch (error) {

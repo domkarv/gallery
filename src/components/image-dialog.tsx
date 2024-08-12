@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogTitle,
   DialogTrigger,
@@ -46,22 +47,23 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
 
         <DialogContent aria-describedby={undefined} className="mb-0">
           <DialogTitle className="sr-only">{img.name}</DialogTitle>
-
-          <Image
-            src={img.url}
-            alt={img.name}
-            width={800}
-            height={800}
-            className="h-auto max-h-[70vh] w-full object-contain"
-            placeholder="blur"
-            blurDataURL={base64}
-            unoptimized
-            loading="lazy"
-          />
+          <DialogDescription asChild>
+            <Image
+              src={img.url}
+              alt={img.name}
+              width={800}
+              height={800}
+              className="h-auto max-h-[70vh] w-full object-contain"
+              placeholder="blur"
+              blurDataURL={base64}
+              unoptimized
+              loading="lazy"
+            />
+          </DialogDescription>
 
           <DialogFooter className="flex w-full flex-row items-center justify-between gap-4">
             <DownloadBtn img={img} />
-            <DeleteBtn publicId={img.publicId} />
+            <DeleteBtn publicId={img.publicId} groupId={img.groupId} />
           </DialogFooter>
 
           <DialogClose asChild>

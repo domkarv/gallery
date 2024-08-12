@@ -1,13 +1,12 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
+import { v2 as cloudinary } from "cloudinary";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { env } from "~/env";
 import { db } from "./db";
 import { groups } from "./db/schema";
-
-export async function joinGroupAction(formData: FormData) {
-  console.log(formData.get("group"));
-}
 
 interface State {
   error?: string;
@@ -101,3 +100,40 @@ export async function getGroupInfo({ id }: { id: string }) {
     throw new Error("Error occured while reading group info");
   }
 }
+
+export const deleteGroupAction = async (groupId: string) => {
+  try {
+    const groupImages = await db
+      .delete(groups)
+      .where(eq(groups.id, groupId))
+      .returning({
+        images: groups.images,
+      });
+
+    if (groupImages[0] && groupImages[0].images.length !== 0) {
+      cloudinary.config({
+        api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+        cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        api_secret: env.CLOUDINARY_API_SECRET,
+      });
+
+      await cloudinary.api.delete_resources(
+        groupImages[0].images,
+        (error, result) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(result);
+          }
+        },
+      );
+    }
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while deleting group");
+  }
+
+  revalidatePath("/");
+};

@@ -58,7 +58,7 @@ export default function CreateGroup() {
           <DialogDescription asChild>
             <div className="flex flex-col items-start gap-4">
               <Label htmlFor="group_name">Enter group name</Label>
-              <Input name="group_name" required />
+              <Input name="group_name" required autoComplete="off" />
               {state.error && <p className="text-sm">{state.error}</p>}
             </div>
           </DialogDescription>
