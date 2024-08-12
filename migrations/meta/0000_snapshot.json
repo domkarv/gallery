@@ -1,5 +1,5 @@
 {
-  "id": "80e7c268-9f22-4b12-a461-76869583474a",
+  "id": "8105b54b-f41d-44bf-be3d-e2cca864542b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -29,7 +29,7 @@
         },
         "images": {
           "name": "images",
-          "type": "varchar(256)[]",
+          "type": "varchar[]",
           "primaryKey": false,
           "notNull": true,
           "default": "ARRAY[]::text[]"
@@ -99,7 +99,7 @@
         },
         "group_id": {
           "name": "group_id",
-          "type": "varchar(256)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -125,7 +125,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "gallery_image_group_id_gallery_group_id_fk": {
+          "name": "gallery_image_group_id_gallery_group_id_fk",
+          "tableFrom": "gallery_image",
+          "tableTo": "gallery_group",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }

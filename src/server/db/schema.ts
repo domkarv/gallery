@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { relations, sql, type InferSelectModel } from "drizzle-orm";
+import { sql, type InferSelectModel } from "drizzle-orm";
 import { pgTableCreator, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 /**
@@ -17,7 +17,9 @@ export const images = createTable("image", {
   name: varchar("name", { length: 256 }).notNull(),
   url: varchar("url", { length: 1024 }).notNull(),
   userId: varchar("user_id", { length: 256 }).notNull(),
-  groupId: varchar("group_id", { length: 256 }).notNull(),
+  groupId: uuid("group_id")
+    .notNull()
+    .references(() => groups.id, { onDelete: "cascade" }),
   publicId: varchar("public_id", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -35,17 +37,6 @@ export const groups = createTable("group", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
-
-export const groupRelation = relations(groups, ({ many }) => ({
-  gallery_image: many(images),
-}));
-
-export const imageRelation = relations(images, ({ one }) => ({
-  gallery_group: one(groups, {
-    fields: [images.groupId],
-    references: [groups.images],
-  }),
-}));
 
 export type ImageType = typeof images.$inferSelect;
 export type GroupType = InferSelectModel<typeof groups>;
