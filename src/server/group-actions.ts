@@ -137,3 +137,37 @@ export const deleteGroupAction = async (groupId: string) => {
 
   revalidatePath("/");
 };
+
+export const renameGroupAction = async (
+  groupId: string,
+  prevState: State,
+  formData: FormData,
+) => {
+  const groupName = formData.get("group_name");
+
+  if (!groupName || typeof groupName !== "string") {
+    return {
+      success: false,
+    };
+  }
+
+  try {
+    await db
+      .update(groups)
+      .set({
+        name: groupName,
+      })
+      .where(eq(groups.id, groupId));
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while renaming group");
+  }
+
+  revalidatePath("/");
+
+  return {
+    success: true,
+  };
+};

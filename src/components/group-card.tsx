@@ -20,6 +20,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { type GroupType } from "~/server/db/schema";
 import DeleteGroupBtn from "./delete-group-btn";
+import RenameGroupBtn from "./rename-group-btn";
 
 export default function GroupCard({ group }: { group: GroupType }) {
   return (
@@ -57,7 +58,7 @@ export default function GroupCard({ group }: { group: GroupType }) {
             </button>
           </DropdownMenuLabel>
           <DropdownMenuLabel>
-            <button className="w-full text-start font-normal">Rename</button>
+            <RenameGroupBtn groupId={group.id} />
           </DropdownMenuLabel>
           <AlertDialog>
             <AlertDialogTrigger className="w-full">
