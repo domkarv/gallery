@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { ImagesGrid } from "~/components/image-grid";
 import { UploadButton } from "~/components/upload-button";
 import { getGroupInfo } from "~/server/group-actions";
@@ -13,19 +14,23 @@ export default async function Page({ params }: PageProps) {
   const user = auth();
   const groupInfo = await getGroupInfo({ id: params.id });
 
-  if (user.userId !== groupInfo?.admin) {
-    return (
-      <p className="text-balance text-center text-sm font-semibold sm:text-lg">
-        {`😥 You are not authenticated 🙄`}
-      </p>
-    );
+  if (!user.userId) {
+    redirect("/");
   }
 
-  if (!groupInfo) {
+  if (user.userId && !groupInfo) {
     return (
       <div className="text-center text-sm font-semibold sm:text-lg">
         {`😥 Invalid Group`}
       </div>
+    );
+  }
+
+  if (user.userId !== groupInfo?.admin) {
+    return (
+      <p className="text-balance text-center text-sm font-semibold sm:text-lg">
+        {`😥 You are not authenticated to access this group 🙄`}
+      </p>
     );
   }
 
