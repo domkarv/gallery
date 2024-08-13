@@ -15,7 +15,7 @@ const font = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Gallery App",
+  title: "Gallry App",
   description: "Place where you can group your photos.",
   keywords: [
     "gallery",

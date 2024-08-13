@@ -5,7 +5,7 @@ export default defineConfig({
   schema: "src/server/db/schema.ts",
   out: "migrations",
   dialect: "postgresql",
-  tablesFilter: ["gallery_*"],
+  tablesFilter: ["gallry_*"],
   dbCredentials: {
     url: env.POSTGRES_URL,
   },

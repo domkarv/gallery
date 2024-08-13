@@ -1,6 +1,6 @@
-# Gallery
+# Gallry
 
-Gallery is a web application that allows users to store, organize, and manage their images in groups. Users can easily upload images, group them by categories, and delete or download them whenever needed.
+Gallry is a web application that allows users to store, organize, and manage their images in groups. Users can easily upload images, group them by categories, and delete or download them whenever needed.
 
 ## Features
 
@@ -46,8 +46,8 @@ Gallery is a web application that allows users to store, organize, and manage th
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/domkarv/gallery.git
-   cd gallery
+   git clone https://github.com/domkarv/gallry.git
+   cd gallry
    ```
 
 2. Install dependencies:

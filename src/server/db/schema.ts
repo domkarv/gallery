@@ -16,7 +16,7 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `gallery_${name}`);
+export const createTable = pgTableCreator((name) => `gallry_${name}`);
 
 export const images = createTable("image", {
   id: uuid("id").defaultRandom().primaryKey(),

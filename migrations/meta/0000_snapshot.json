@@ -1,11 +1,11 @@
 {
-  "id": "370246ea-723c-479e-aead-7ebab9ec1266",
+  "id": "99defaec-908e-4dee-b20c-0304a8190358",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.gallery_group": {
-      "name": "gallery_group",
+    "public.gallry_group": {
+      "name": "gallry_group",
       "schema": "",
       "columns": {
         "id": {
@@ -59,8 +59,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "gallery_group_name_unique": {
-          "name": "gallery_group_name_unique",
+        "gallry_group_name_unique": {
+          "name": "gallry_group_name_unique",
           "nullsNotDistinct": false,
           "columns": [
             "name"
@@ -68,8 +68,8 @@
         }
       }
     },
-    "public.gallery_image": {
-      "name": "gallery_image",
+    "public.gallry_image": {
+      "name": "gallry_image",
       "schema": "",
       "columns": {
         "id": {
@@ -132,10 +132,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "gallery_image_group_id_gallery_group_id_fk": {
-          "name": "gallery_image_group_id_gallery_group_id_fk",
-          "tableFrom": "gallery_image",
-          "tableTo": "gallery_group",
+        "gallry_image_group_id_gallry_group_id_fk": {
+          "name": "gallry_image_group_id_gallry_group_id_fk",
+          "tableFrom": "gallry_image",
+          "tableTo": "gallry_group",
           "columnsFrom": [
             "group_id"
           ],

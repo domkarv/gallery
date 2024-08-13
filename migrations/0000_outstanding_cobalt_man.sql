@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "gallery_group" (
+CREATE TABLE IF NOT EXISTS "gallry_group" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(256) NOT NULL,
 	"admin" varchar(256) NOT NULL,
@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS "gallery_group" (
 	"thumbnail" varchar(256),
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "gallery_group_name_unique" UNIQUE("name")
+	CONSTRAINT "gallry_group_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "gallery_image" (
+CREATE TABLE IF NOT EXISTS "gallry_image" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(256) NOT NULL,
 	"url" varchar(1024) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "gallery_image" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "gallery_image" ADD CONSTRAINT "gallery_image_group_id_gallery_group_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."gallery_group"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "gallry_image" ADD CONSTRAINT "gallry_image_group_id_gallry_group_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."gallry_group"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
