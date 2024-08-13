@@ -1,5 +1,5 @@
 {
-  "id": "8105b54b-f41d-44bf-be3d-e2cca864542b",
+  "id": "370246ea-723c-479e-aead-7ebab9ec1266",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -29,7 +29,7 @@
         },
         "images": {
           "name": "images",
-          "type": "varchar[]",
+          "type": "varchar(256)[]",
           "primaryKey": false,
           "notNull": true,
           "default": "ARRAY[]::text[]"
@@ -100,6 +100,12 @@
         "group_id": {
           "name": "group_id",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_thumbnail": {
+          "name": "is_thumbnail",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },

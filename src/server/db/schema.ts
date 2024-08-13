@@ -2,7 +2,13 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql, type InferSelectModel } from "drizzle-orm";
-import { pgTableCreator, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgTableCreator,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -20,6 +26,7 @@ export const images = createTable("image", {
   groupId: uuid("group_id")
     .notNull()
     .references(() => groups.id, { onDelete: "cascade" }),
+  isThumbnail: boolean("is_thumbnail").notNull(),
   publicId: varchar("public_id", { length: 256 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
