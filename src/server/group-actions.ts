@@ -193,17 +193,19 @@ export async function changeGroupThumbnail({
   }
 
   try {
-    await db.delete(images).where(eq(images.publicId, imagePublicId));
+    if (imagePublicId) {
+      await db.delete(images).where(eq(images.publicId, imagePublicId));
 
-    cloudinary.config({
-      api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-      cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-      api_secret: env.CLOUDINARY_API_SECRET,
-    });
+      cloudinary.config({
+        api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+        cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        api_secret: env.CLOUDINARY_API_SECRET,
+      });
 
-    await cloudinary.uploader.destroy(imagePublicId, () => {
-      console.log("Image Deleted!");
-    });
+      await cloudinary.uploader.destroy(imagePublicId, () => {
+        console.log("Image Deleted!");
+      });
+    }
 
     await db.insert(images).values({
       url: info.url,
