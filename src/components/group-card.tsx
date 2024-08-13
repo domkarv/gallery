@@ -39,24 +39,19 @@ export default function GroupCard({ group }: { group: GroupType }) {
           height="240"
           alt={group.name}
           unoptimized
-          className="aspect-[5/3] h-[200px] w-full object-cover transition-all group-hover:scale-125 sm:h-[240px]"
+          className="aspect-[5/3] h-[200px] w-full object-cover transition-all group-hover:scale-110 sm:h-[240px]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <div className="absolute bottom-4 left-4 text-primary-foreground">
+        <div className="absolute bottom-4 left-4 mix-blend-difference">
           <h3 className="text-2xl font-semibold">{group.name}</h3>
         </div>
       </Link>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <EllipsisVerticalIcon className="absolute right-3 top-3 cursor-pointer stroke-black" />
+          <EllipsisVerticalIcon className="absolute right-3 top-3 cursor-pointer mix-blend-difference" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>
-            <button className="w-full text-start font-normal">
-              Change Thumbnail
-            </button>
-          </DropdownMenuLabel>
           <DropdownMenuLabel>
             <RenameGroupBtn groupId={group.id} />
           </DropdownMenuLabel>

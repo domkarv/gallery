@@ -97,7 +97,7 @@ export async function deleteImage({
     throw new Error("Error occured while deleting image");
   }
 
-  revalidatePath("/");
+  revalidatePath(`/group/${groupId}`);
 }
 
 export async function uploadImage({
@@ -146,5 +146,5 @@ export async function uploadImage({
     );
   }
 
-  revalidatePath("/");
+  revalidatePath(`/group/${groupId}`);
 }

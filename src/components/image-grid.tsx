@@ -17,7 +17,7 @@ export async function ImagesGrid({ groupId }: { groupId: string }) {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="my-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {[getColumns(0), getColumns(1), getColumns(2), getColumns(3)].map(
           (column, idx) => {
             return (

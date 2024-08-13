@@ -1,7 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
+import Image from "next/image";
 import { redirect } from "next/navigation";
+import ChangeThumbnailBtn from "~/components/change-thumbnail";
 import { ImagesGrid } from "~/components/image-grid";
 import { UploadButton } from "~/components/upload-button";
+import { blurEffect } from "~/lib/blur-effect";
 import { getGroupInfo } from "~/server/group-actions";
 
 interface PageProps {
@@ -34,11 +37,34 @@ export default async function Page({ params }: PageProps) {
     );
   }
 
+  const blur = await blurEffect(
+    groupInfo.thumbnail ?? "https://generated.vusercontent.net/placeholder.svg",
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div className="mb-8 flex flex-row justify-between">
-        <h1 className="text-5xl font-bold text-secondary">{groupInfo.name}</h1>
-        <UploadButton groupId={groupInfo.id} />
+      <div className="relative mb-8 flex aspect-[4/1] flex-row justify-between">
+        <Image
+          src={
+            groupInfo.thumbnail ??
+            "https://generated.vusercontent.net/placeholder.svg"
+          }
+          alt={groupInfo.name}
+          width={400}
+          height={400}
+          className="h-auto w-full object-cover object-center"
+          placeholder="blur"
+          blurDataURL={blur}
+          unoptimized
+          loading="lazy"
+        />
+        <h1 className="absolute bottom-3 left-3 text-5xl font-bold mix-blend-difference">
+          {groupInfo.name}
+        </h1>
+        <div className="absolute right-3 top-3 flex flex-row gap-4">
+          <UploadButton groupId={groupInfo.id} />
+          <ChangeThumbnailBtn groupId={groupInfo.id} />
+        </div>
       </div>
 
       <ImagesGrid groupId={params.id} />

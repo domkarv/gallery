@@ -3,6 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { eq } from "drizzle-orm";
+import { type CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { revalidatePath } from "next/cache";
 import { env } from "~/env";
 import { db } from "./db";
@@ -171,3 +172,38 @@ export const renameGroupAction = async (
     success: true,
   };
 };
+
+export async function changeGroupThumbnail({
+  info,
+  groupId,
+}: {
+  info: string | CloudinaryUploadWidgetInfo | undefined;
+  groupId: string;
+}) {
+  const user = auth();
+
+  if (!user.userId) {
+    throw new Error("Unauthorized!");
+  }
+
+  if (typeof info == "undefined" || typeof info == "string") {
+    throw new Error("Failed to read images!");
+  }
+
+  try {
+    await db
+      .update(groups)
+      .set({
+        thumbnail: info.url,
+      })
+      .where(eq(groups.id, groupId));
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while uploading group thumbnail");
+  }
+
+  revalidatePath("/");
+  revalidatePath(`/group/${groupId}`);
+}

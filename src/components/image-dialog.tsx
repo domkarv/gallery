@@ -1,6 +1,6 @@
 import { CircleXIcon, ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
-import { getPlaiceholder } from "plaiceholder";
+import { blurEffect } from "~/lib/blur-effect";
 import type { ImageType } from "~/server/db/schema";
 import { DeleteBtn, DownloadBtn } from "./dialog-btn";
 import {
@@ -14,11 +14,7 @@ import {
 } from "./ui/dialog";
 
 export default async function ImageDialog({ img }: { img: ImageType }) {
-  const buffer = await fetch(img.url).then(async (res) => {
-    return Buffer.from(await res.arrayBuffer());
-  });
-
-  const { base64 } = await getPlaiceholder(buffer);
+  const blur = await blurEffect(img.url);
 
   return (
     <div className="group relative">
@@ -29,7 +25,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
         height={400}
         className="h-auto w-full object-contain"
         placeholder="blur"
-        blurDataURL={base64}
+        blurDataURL={blur}
         unoptimized
         loading="lazy"
       />
@@ -55,7 +51,7 @@ export default async function ImageDialog({ img }: { img: ImageType }) {
               height={800}
               className="h-auto max-h-[70vh] w-full object-contain"
               placeholder="blur"
-              blurDataURL={base64}
+              blurDataURL={blur}
               unoptimized
               loading="lazy"
             />
