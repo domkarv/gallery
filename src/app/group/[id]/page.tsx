@@ -5,7 +5,7 @@ import ChangeThumbnailBtn from "~/components/change-thumbnail";
 import { ImagesGrid } from "~/components/image-grid";
 import { UploadButton } from "~/components/upload-button";
 import { blurEffect } from "~/lib/blur-effect";
-import { getGroupInfo } from "~/server/group-actions";
+import { getGroupInfo, getThumbnailImage } from "~/server/group-actions";
 
 interface PageProps {
   params: {
@@ -37,8 +37,10 @@ export default async function Page({ params }: PageProps) {
     );
   }
 
+  const thumbnailImage = await getThumbnailImage(groupInfo.thumbnail);
+
   const blur = await blurEffect(
-    groupInfo.thumbnail ?? "https://generated.vusercontent.net/placeholder.svg",
+    thumbnailImage ?? "https://generated.vusercontent.net/placeholder.svg",
   );
 
   return (
@@ -46,7 +48,7 @@ export default async function Page({ params }: PageProps) {
       <div className="relative mb-8 flex aspect-[4/1] flex-row justify-between">
         <Image
           src={
-            groupInfo.thumbnail ??
+            thumbnailImage ??
             "https://generated.vusercontent.net/placeholder.svg"
           }
           alt={groupInfo.name}
@@ -63,7 +65,10 @@ export default async function Page({ params }: PageProps) {
         </h1>
         <div className="absolute right-3 top-3 flex flex-row gap-4">
           <UploadButton groupId={groupInfo.id} />
-          <ChangeThumbnailBtn groupId={groupInfo.id} />
+          <ChangeThumbnailBtn
+            groupId={groupInfo.id}
+            imagePublicId={groupInfo.thumbnail!}
+          />
         </div>
       </div>
 

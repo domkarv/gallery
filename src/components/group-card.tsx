@@ -19,10 +19,13 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { type GroupType } from "~/server/db/schema";
+import { getThumbnailImage } from "~/server/group-actions";
 import DeleteGroupBtn from "./delete-group-btn";
 import RenameGroupBtn from "./rename-group-btn";
 
-export default function GroupCard({ group }: { group: GroupType }) {
+export default async function GroupCard({ group }: { group: GroupType }) {
+  const thumbnailImage = await getThumbnailImage(group.thumbnail);
+
   return (
     <Card className="relative w-full max-w-md overflow-hidden rounded-xl shadow-lg">
       <Link
@@ -32,7 +35,7 @@ export default function GroupCard({ group }: { group: GroupType }) {
       >
         <Image
           src={
-            group.thumbnail ??
+            thumbnailImage ??
             "https://generated.vusercontent.net/placeholder.svg"
           }
           width="400"

@@ -23,7 +23,10 @@ export async function getImages({
   try {
     return await db.query.images.findMany({
       where: (model, { eq, and }) =>
-        and(eq(model.userId, user.userId), eq(model.groupId, groupId)),
+        and(
+          and(eq(model.userId, user.userId), eq(model.groupId, groupId)),
+          eq(model.isThumbnail, false),
+        ),
       orderBy: (model, { desc }) => desc(model.createdAt),
     });
   } catch (error) {
@@ -126,6 +129,7 @@ export async function uploadImage({
         userId: user.userId,
         publicId: info.public_id,
         groupId: groupId,
+        isThumbnail: false,
       })
       .returning({
         publicId: images.publicId,

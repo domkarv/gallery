@@ -2,12 +2,12 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { type CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { revalidatePath } from "next/cache";
 import { env } from "~/env";
 import { db } from "./db";
-import { groups } from "./db/schema";
+import { groups, images } from "./db/schema";
 
 interface State {
   error?: string;
@@ -176,9 +176,11 @@ export const renameGroupAction = async (
 export async function changeGroupThumbnail({
   info,
   groupId,
+  imagePublicId,
 }: {
   info: string | CloudinaryUploadWidgetInfo | undefined;
   groupId: string;
+  imagePublicId: string;
 }) {
   const user = auth();
 
@@ -191,10 +193,31 @@ export async function changeGroupThumbnail({
   }
 
   try {
+    await db.delete(images).where(eq(images.publicId, imagePublicId));
+
+    cloudinary.config({
+      api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+      cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+      api_secret: env.CLOUDINARY_API_SECRET,
+    });
+
+    await cloudinary.uploader.destroy(imagePublicId, () => {
+      console.log("Image Deleted!");
+    });
+
+    await db.insert(images).values({
+      url: info.url,
+      name: info.original_filename,
+      userId: user.userId,
+      publicId: info.public_id,
+      groupId: groupId,
+      isThumbnail: true,
+    });
+
     await db
       .update(groups)
       .set({
-        thumbnail: info.url,
+        thumbnail: info.public_id,
       })
       .where(eq(groups.id, groupId));
   } catch (error) {
@@ -206,4 +229,22 @@ export async function changeGroupThumbnail({
 
   revalidatePath("/");
   revalidatePath(`/group/${groupId}`);
+}
+
+export async function getThumbnailImage(publicId: string | null) {
+  if (!publicId) return null;
+
+  try {
+    const image = await db.query.images.findFirst({
+      where: (model, { eq }) =>
+        and(eq(model.publicId, publicId), eq(model.isThumbnail, true)),
+    });
+
+    return image?.url;
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    else console.error(error);
+
+    throw new Error("Error occured while reading group thumbnail");
+  }
 }

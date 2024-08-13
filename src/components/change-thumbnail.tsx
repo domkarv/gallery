@@ -5,13 +5,23 @@ import { CldUploadButton } from "next-cloudinary";
 import { changeGroupThumbnail } from "~/server/group-actions";
 import { Button } from "./ui/button";
 
-export default function ChangeThumbnailBtn({ groupId }: { groupId: string }) {
+export default function ChangeThumbnailBtn({
+  groupId,
+  imagePublicId,
+}: {
+  groupId: string;
+  imagePublicId: string;
+}) {
   return (
     <Button asChild>
       <CldUploadButton
         uploadPreset="next_cloudinary_preset"
         onSuccess={async (res) => {
-          await changeGroupThumbnail({ info: res.info, groupId });
+          await changeGroupThumbnail({
+            info: res.info,
+            groupId,
+            imagePublicId,
+          });
         }}
         className="gap-2 mix-blend-difference"
       >
