@@ -45,7 +45,16 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div className="relative mb-8 flex aspect-[4/1] flex-row justify-between">
+      <div className="mb-4 flex flex-col gap-4 sm:hidden">
+        <UploadButton groupId={groupInfo.id} />
+
+        <ChangeThumbnailBtn
+          groupId={groupInfo.id}
+          imagePublicId={groupInfo.thumbnail!}
+        />
+      </div>
+
+      <div className="relative mb-8 flex aspect-[4/1]">
         <Image
           src={
             thumbnailImage ??
@@ -60,11 +69,14 @@ export default async function Page({ params }: PageProps) {
           unoptimized
           loading="lazy"
         />
+
         <h1 className="absolute bottom-3 left-3 text-5xl font-bold mix-blend-difference">
           {groupInfo.name}
         </h1>
-        <div className="absolute right-3 top-3 flex flex-row gap-4">
+
+        <div className="absolute right-3 top-3 hidden flex-row gap-4 sm:flex">
           <UploadButton groupId={groupInfo.id} />
+
           <ChangeThumbnailBtn
             groupId={groupInfo.id}
             imagePublicId={groupInfo.thumbnail!}
