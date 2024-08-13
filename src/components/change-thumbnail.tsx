@@ -24,6 +24,10 @@ export default function ChangeThumbnailBtn({
           });
         }}
         className="gap-2 mix-blend-difference"
+        options={{
+          maxFileSize: 8388608, // 8mb
+          sources: ["local", "camera", "google_drive", "url"],
+        }}
       >
         <PenIcon className="size-4" /> Change Thumbnail
       </CldUploadButton>
