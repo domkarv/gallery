@@ -79,10 +79,11 @@ export function DownloadBtn({ img }: { img: ImageType }) {
 
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", image.name);
+    link.download = image.name;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 
     setLoading(false);
     if (ref.current) ref.current.click();
